@@ -1,5 +1,5 @@
 <template>
-    <AdminPanel title="Movimientos" style="height: 800px" class="pt-4">
+    <AdminPanel title="Movimientos" class="pt-4">
         <div class="d-flex flex-column ga-5">
             <div class="w-100 d-flex align-center">
                 <h5 class="text-h5 text-lagoon-shade">Ingresos</h5>

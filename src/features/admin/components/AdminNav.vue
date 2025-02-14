@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="d-flex align-center text-white bg-turquoise elevation-10 nav-regular position-absolute py-4 px-3 ga-2 rounded-xl flex-column"
+        class="d-flex align-center text-white bg-turquoise elevation-3 py-4 px-2 ga-1 rounded-xl flex-column"
     >
         <router-link
             v-for="(item, index) in navAdmin"
@@ -16,8 +16,8 @@
             style="text-decoration: none; color: white"
         >
             <div class="d-flex flex-column align-center px-2 py-2">
-                <component :is="item.iconComponent" size="44" />
-                <span class="text-subtitle-1">{{ item.name }}</span>
+                <component :is="item.iconComponent" size="40" />
+                <span class="text-subtitle-2">{{ item.name }}</span>
             </div>
         </router-link>
     </nav>
@@ -88,9 +88,5 @@ const normalizePath = (view) => {
 }
 .bg-turquoise {
     background: #00acac;
-}
-.nav-regular {
-    left: -80px;
-    z-index: 50;
 }
 </style>

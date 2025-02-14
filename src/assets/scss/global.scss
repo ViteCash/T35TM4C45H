@@ -38,6 +38,9 @@ body {
     overflow-x: hidden;
 }
 
+.img-perfil {
+    width: calc(100% - 100px);
+}
 .cont-mcas-inter {
     margin-top: 100px;
     z-index: 999999;

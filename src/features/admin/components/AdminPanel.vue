@@ -1,7 +1,7 @@
 <template>
     <div
-        class="d-flex flex-column ga-6 my-16 my-lg-0 w-100 justify-center align-center"
-        style="animation: EntrarRight 0.9s ease"
+        class="d-flex flex-column ga-5 w-100 justify-center align-center rounded-xl elevation-2 bg-white pa-7"
+        style="animation: EntrarRight 0.9s ease; height: 95%"
     >
         <v-row class="w-100">
             <v-col cols="3" class="text-start px-0">

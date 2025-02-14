@@ -1,5 +1,5 @@
 <template>
-    <AdminPanel title="Detalle de Codigo de Promoción" style="height: 800px">
+    <AdminPanel title="Detalle de Codigo de Promoción">
         <div v-if="validateUserActivePermiss" class="d-flex justify-end ga-2">
             <v-btn
                 color="warning"

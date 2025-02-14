@@ -1,5 +1,5 @@
 <template>
-    <AdminPanel title="Detalle de Pago" style="height: 800px">
+    <AdminPanel title="Detalle de Pago">
         <AdminDetailsSection title="Información">
             <v-row class="d-flex align-center">
                 <v-col cols="6" class="d-flex flex-column ga-5">
@@ -93,7 +93,6 @@
                 <v-col cols="6" class="text-center">
                     <img
                         class="img-perfil"
-                        style="max-height: 1200px"
                         v-if="dataOrden.img && dataOrden.img !== '-'"
                         :src="`${routeImg}/${dataOrden.img}`"
                     />

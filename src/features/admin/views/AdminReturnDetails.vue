@@ -1,5 +1,5 @@
 <template>
-    <AdminPanel title="Detalle de Pago" style="height: 800px">
+    <AdminPanel title="Detalle de Pago">
         <div v-if="validateUserActivePermiss">
             <div class="d-flex justify-end ga-2" v-if="!textInfo">
                 <v-btn
@@ -127,7 +127,6 @@
                 <v-col cols="6" class="text-center">
                     <img
                         class="img-perfil"
-                        style="max-height: 1200px"
                         v-if="dataOrden.img && dataOrden.img !== '-'"
                         :src="`${routeImg}/${dataOrden.img}`"
                     />

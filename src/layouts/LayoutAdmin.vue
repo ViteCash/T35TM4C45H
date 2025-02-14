@@ -17,9 +17,7 @@
             </template>
         </v-app-bar>
 
-        <v-main
-            class="d-flex flex-column align-center justify-end px-md-16 h-100 pb-10"
-        >
+        <v-main class="d-flex px-4" style="height: 100vh">
             <img
                 class="blueGradientBg"
                 src="@/assets/svg/circle-blue.svg"
@@ -27,16 +25,9 @@
             />
             <router-view v-slot="{ Component }">
                 <transition name="route" mode="out-in">
-                    <div
-                        class="w-100 pl-md-12"
-                        :class="isMobile ? 'h-100' : 'h-95'"
-                    >
-                        <div
-                            class="d-flex flex-column align-center rounded-xl position-relative w-100 elevation-2 bg-white justify-center px-4 px-md-16 h-100"
-                        >
-                            <AdminNav />
-                            <component :is="Component" />
-                        </div>
+                    <div class="d-flex align-center w-100 ga-4">
+                        <AdminNav />
+                        <component :is="Component" />
                     </div>
                 </transition>
             </router-view>
@@ -50,14 +41,9 @@ import AdminNav from '@/features/admin/components/AdminNav.vue'
 
 import { storeToRefs } from 'pinia'
 import { userAuthStore } from '@/stores/auth'
-import { useDisplay } from 'vuetify'
-import { computed } from 'vue'
 
 const authStore = userAuthStore()
 const { user } = storeToRefs(authStore)
-
-const { smAndDown } = useDisplay()
-const isMobile = computed(() => smAndDown.value)
 </script>
 
 <style lang="scss">
@@ -66,8 +52,5 @@ const isMobile = computed(() => smAndDown.value)
     left: 0;
     top: 0;
     z-index: -10;
-}
-.h-95 {
-    height: 95%;
 }
 </style>

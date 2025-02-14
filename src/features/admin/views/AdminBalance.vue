@@ -1,5 +1,5 @@
 <template>
-    <AdminPanel title="Balance" style="height: 800px">
+    <AdminPanel title="Balance">
         <v-row>
             <v-col class="ms-md-auto" cols="12" lg="3">
                 <v-select

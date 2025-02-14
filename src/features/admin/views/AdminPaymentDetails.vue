@@ -1,27 +1,28 @@
 <template>
-    <AdminPanel title="Detalle de Pago" style="height: 800px">
-        <div
-            class="mb-8"
-            v-if="
-                validateUserActivePermiss &&
-                !textInfo &&
-                dataOrden.state === 1 &&
-                route.name === 'pago'
-            "
-        >
-            <div class="d-flex justify-end ga-2">
-                <v-btn
-                    color="success"
-                    text="Aprobar pago"
-                    @click="updateOrder(3)"
-                />
-                <v-btn
-                    color="red"
-                    text="Cancelar pago"
-                    @click="updateOrder(2)"
-                />
+    <AdminPanel title="Detalle de Pago">
+        <template #rightBtn>
+            <div
+                v-if="
+                    validateUserActivePermiss &&
+                    !textInfo &&
+                    dataOrden.state === 1 &&
+                    route.name === 'pago'
+                "
+            >
+                <div class="d-flex justify-end ga-2">
+                    <v-btn
+                        color="success"
+                        text="Aprobar pago"
+                        @click="updateOrder(3)"
+                    />
+                    <v-btn
+                        color="red"
+                        text="Cancelar pago"
+                        @click="updateOrder(2)"
+                    />
+                </div>
             </div>
-        </div>
+        </template>
 
         <AdminDetailsSection title="Información">
             <v-row class="d-flex align-center">
@@ -115,7 +116,6 @@
                 <v-col cols="6" class="text-center">
                     <img
                         class="img-perfil"
-                        style="max-height: 1200px"
                         v-if="dataOrden.img && dataOrden.img !== '-'"
                         :src="`${routeImg}/${dataOrden.img}`"
                     />
@@ -313,3 +313,5 @@ const copyContent = async (data) => {
     }, 1000)
 }
 </script>
+
+<style></style>

@@ -1,5 +1,5 @@
 <template>
-    <AdminPanel title="Detalle de Usuario" style="height: 800px">
+    <AdminPanel title="Detalle de Usuario">
         <AdminDetailsSection v-if="referredCode" title="Codigo de Referido">
             <div class="d-flex w-100">
                 <v-form ref="refReferredCode" class="d-flex ga-2 w-100">
