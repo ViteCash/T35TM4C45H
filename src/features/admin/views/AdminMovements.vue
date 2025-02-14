@@ -4,75 +4,83 @@
             <div class="w-100 d-flex align-center">
                 <h5 class="text-h5 text-lagoon-shade">Ingresos</h5>
                 <div class="d-flex ga-2 w-100 justify-end">
-                    <v-btn
-                        v-if="!addIngresos"
-                        color="success"
-                        icon="mdi-plus"
-                        @click=";(addIngresos = true), (addEgresos = false)"
-                    />
-                    <v-btn
-                        v-if="addIngresos"
-                        :loading="loadingSave"
-                        class="ml-2"
-                        @click="save(1)"
-                        color="success"
-                        text="Guardar"
-                    />
-                    <v-btn
-                        v-if="addIngresos"
-                        class="ml-2"
-                        @click="addIngresos = false"
-                        color="error"
-                        text="Cancelar"
-                    />
-                </div>
-                <v-form v-if="addIngresos" ref="formRegister" class="w-75">
-                    <v-card class="card-content" width="100%">
-                        <v-row>
-                            <v-col lg="6" class="content-input-changes">
-                                <v-text-field
-                                    v-model="form.monto"
-                                    prefix="S/"
-                                    label="Monto"
-                                    class="ip-form inpt-general"
-                                    @blur="addComaNumber()"
-                                    :rules="numberRulesSend"
-                                />
-                            </v-col>
-                            <v-col lg="3">
-                                <v-select
-                                    label="Seleccione una entidad financiera"
-                                    v-model="form.mrc_bank_id"
-                                    :items="banks"
-                                    class="ip-form inpt-general mb-2"
-                                    item-title="name_bank"
-                                    :rules="bankRules"
-                                    item-value="id"
+                    <v-dialog width="auto">
+                        <template v-slot:activator="{ props: activatorProps }">
+                            <v-btn
+                                v-bind="activatorProps"
+                                color="success"
+                                icon="mdi-plus"
+                            />
+                        </template>
+
+                        <template v-slot:default="{ isActive }">
+                            <v-card width="500" class="py-3" rounded="xl">
+                                <v-card-title
+                                    class="text-lagoon-shade text-h5 font-weight-medium text-center"
+                                    >Agregar Ingreso</v-card-title
                                 >
-                                    <template #item="{ item, props }">
-                                        <v-list-item v-bind="props">
-                                            <template #title>
-                                                <div
-                                                    class="d-flex justify-star align-center"
-                                                >
-                                                    {{ item.raw.name_bank }}
-                                                </div>
+                                <v-card-text>
+                                    <v-form ref="formRegister">
+                                        <v-text-field
+                                            v-model="form.monto"
+                                            prefix="S/"
+                                            label="Monto"
+                                            class="ip-form inpt-general"
+                                            @blur="addComaNumber()"
+                                            :rules="numberRulesSend"
+                                        />
+                                        <v-select
+                                            label="Seleccione una entidad financiera"
+                                            v-model="form.mrc_bank_id"
+                                            :items="banks"
+                                            class="ip-form inpt-general mb-2"
+                                            item-title="name_bank"
+                                            :rules="bankRules"
+                                            item-value="id"
+                                        >
+                                            <template #item="{ item, props }">
+                                                <v-list-item v-bind="props">
+                                                    <template #title>
+                                                        <div
+                                                            class="d-flex justify-star align-center"
+                                                        >
+                                                            {{
+                                                                item.raw
+                                                                    .name_bank
+                                                            }}
+                                                        </div>
+                                                    </template>
+                                                </v-list-item>
                                             </template>
-                                        </v-list-item>
-                                    </template>
-                                </v-select>
-                            </v-col>
-                            <v-col>
-                                <v-text-field
-                                    v-model="form.obs"
-                                    label="Observación"
-                                    class="ip-form inpt-general"
-                                    :rules="obsRules"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </v-form>
+                                        </v-select>
+                                        <v-text-field
+                                            v-model="form.obs"
+                                            label="Observación"
+                                            class="ip-form inpt-general"
+                                            :rules="obsRules"
+                                        />
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions
+                                    class="d-flex w-100 justify-center ga-5"
+                                >
+                                    <v-btn
+                                        @click="isActive.value = false"
+                                        color="error"
+                                        text="Cancelar"
+                                        variant="tonal"
+                                    /><v-btn
+                                        :loading="loadingSave"
+                                        @click="save(1, isActive)"
+                                        color="success"
+                                        text="Guardar"
+                                        variant="tonal"
+                                    />
+                                </v-card-actions>
+                            </v-card>
+                        </template>
+                    </v-dialog>
+                </div>
             </div>
             <v-data-table-server
                 class="cl-table"
@@ -112,74 +120,83 @@
             <div class="w-100 d-flex align-center">
                 <h5 class="text-h5 text-lagoon-shade">Egresos</h5>
                 <div class="d-flex ga-2 w-100 justify-end">
-                    <v-btn
-                        v-if="!addEgresos"
-                        color="success"
-                        icon="mdi-plus"
-                        @click=";(addEgresos = true), (addIngresos = false)"
-                    />
-                    <v-btn
-                        v-if="addEgresos"
-                        class="ml-2"
-                        @click="save(2)"
-                        color="success"
-                        text="Guardar"
-                    />
-                    <v-btn
-                        v-if="addEgresos"
-                        class="ml-2"
-                        @click="addEgresos = false"
-                        color="error"
-                        text="Cancelar"
-                    />
-                </div>
-                <v-form v-if="addEgresos" ref="formRegister">
-                    <v-card class="card-content" width="100%">
-                        <v-row>
-                            <v-col lg="6" class="content-input-changes">
-                                <v-text-field
-                                    v-model="form.monto"
-                                    prefix="S/"
-                                    label="Monto"
-                                    class="ip-form inpt-general"
-                                    @blur="addComaNumber()"
-                                    :rules="numberRulesSend"
-                                />
-                            </v-col>
-                            <v-col lg="6">
-                                <v-select
-                                    label="Seleccione una entidad financiera"
-                                    v-model="form.mrc_bank_id"
-                                    :items="banks"
-                                    class="ip-form inpt-general mb-2"
-                                    item-title="name_bank"
-                                    :rules="bankRules"
-                                    item-value="id"
+                    <v-dialog width="auto">
+                        <template v-slot:activator="{ props: activatorProps }">
+                            <v-btn
+                                v-bind="activatorProps"
+                                color="success"
+                                icon="mdi-plus"
+                            />
+                        </template>
+
+                        <template v-slot:default="{ isActive }">
+                            <v-card width="500" class="py-3" rounded="xl">
+                                <v-card-title
+                                    class="text-lagoon-shade text-h5 font-weight-medium text-center"
+                                    >Agregar Egreso</v-card-title
                                 >
-                                    <template #item="{ item, props }">
-                                        <v-list-item v-bind="props">
-                                            <template #title>
-                                                <div
-                                                    class="d-flex justify-star align-center"
-                                                >
-                                                    {{ item.raw.name_bank }}
-                                                </div>
+                                <v-card-text>
+                                    <v-form ref="formRegister">
+                                        <v-text-field
+                                            v-model="form.monto"
+                                            prefix="S/"
+                                            label="Monto"
+                                            class="ip-form inpt-general"
+                                            @blur="addComaNumber()"
+                                            :rules="numberRulesSend"
+                                        />
+                                        <v-select
+                                            label="Seleccione una entidad financiera"
+                                            v-model="form.mrc_bank_id"
+                                            :items="banks"
+                                            class="ip-form inpt-general mb-2"
+                                            item-title="name_bank"
+                                            :rules="bankRules"
+                                            item-value="id"
+                                        >
+                                            <template #item="{ item, props }">
+                                                <v-list-item v-bind="props">
+                                                    <template #title>
+                                                        <div
+                                                            class="d-flex justify-star align-center"
+                                                        >
+                                                            {{
+                                                                item.raw
+                                                                    .name_bank
+                                                            }}
+                                                        </div>
+                                                    </template>
+                                                </v-list-item>
                                             </template>
-                                        </v-list-item>
-                                    </template>
-                                </v-select>
-                            </v-col>
-                            <v-col>
-                                <v-text-field
-                                    v-model="form.obs"
-                                    label="Observación"
-                                    class="ip-form inpt-general"
-                                    :rules="obsRules"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </v-form>
+                                        </v-select>
+                                        <v-text-field
+                                            v-model="form.obs"
+                                            label="Observación"
+                                            class="ip-form inpt-general"
+                                            :rules="obsRules"
+                                        />
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions
+                                    class="d-flex w-100 justify-center ga-5"
+                                >
+                                    <v-btn
+                                        @click="isActive.value = false"
+                                        color="error"
+                                        text="Cancelar"
+                                        variant="tonal"
+                                    /><v-btn
+                                        :loading="loadingSave"
+                                        @click="save(2, isActive)"
+                                        color="success"
+                                        text="Guardar"
+                                        variant="tonal"
+                                    />
+                                </v-card-actions>
+                            </v-card>
+                        </template>
+                    </v-dialog>
+                </div>
             </div>
             <v-data-table-server
                 class="cl-table"
@@ -230,8 +247,6 @@ import { configLocal } from '@/shared/scripts/requestConfig.js'
 
 const ingresos = ref([])
 const egresos = ref([])
-const addIngresos = ref(false)
-const addEgresos = ref(false)
 const formRegister = ref(null)
 const banks = ref([])
 const loadingSave = ref(false)
@@ -306,7 +321,7 @@ const getEgresos = async () => {
     }
 }
 
-const save = async (type) => {
+const save = async (type, isActive) => {
     const valid = await formRegister.value.validate()
     if (valid) {
         try {
@@ -317,15 +332,14 @@ const save = async (type) => {
                 type: type
             })
             if (result.success) {
-                loadingSave.value = false
-                addIngresos.value = false
-                addEgresos.value = false
                 getEgresos()
                 Object.assign(form, {
                     monto: '',
                     mrc_bank_id: null,
                     obs: ''
                 })
+                loadingSave.value = true
+                isActive.value = false
             }
         } catch (error) {}
     }
@@ -361,3 +375,12 @@ onMounted(async () => {
     await validateRoutes('egreso')
 })
 </script>
+<style>
+.v-form {
+    .v-field__input,
+    .v-text-field__prefix {
+        padding-top: 12px;
+        color: #0081a2;
+    }
+}
+</style>

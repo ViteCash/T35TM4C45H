@@ -1,35 +1,38 @@
 <template>
-    <div
-        class="d-flex align-center justify-center ga-5 ga-lg-7 flex-wrap flex-lg-nowrap"
-    >
-        <div class="w-50 d-flex justify-center">
-            <div class="welcomeText">
-                <h5 class="text-h5 text-sm-h4 text-blue-3">¡Hola!</h5>
-                <div v-if="user">
-                    <p
-                        class="text-h4 text-sm-h2 text-blue-2 font-weight-medium"
-                    >
-                        {{ user.nombres.split(' ')[0] }}
-                        <br />
-                        {{ user.apellido_paterno.split(' ')[0] }}
-                    </p>
-                </div>
-                <div class="text-h5 text-sm-h4 text-blue-3">
-                    ¿Qué haremos hoy?
+    <AdminPanel>
+        <div
+            class="d-flex align-center justify-center ga-5 ga-lg-7 flex-wrap flex-lg-nowrap"
+        >
+            <div class="w-50 d-flex justify-center">
+                <div class="welcomeText">
+                    <h5 class="text-h5 text-sm-h4 text-blue-3">¡Hola!</h5>
+                    <div v-if="user">
+                        <p
+                            class="text-h4 text-sm-h2 text-blue-2 font-weight-medium"
+                        >
+                            {{ user.nombres.split(' ')[0] }}
+                            <br />
+                            {{ user.apellido_paterno.split(' ')[0] }}
+                        </p>
+                    </div>
+                    <div class="text-h5 text-sm-h4 text-blue-3">
+                        ¿Qué haremos hoy?
+                    </div>
                 </div>
             </div>
+            <div class="w-50">
+                <img
+                    src="@/assets/images/inicio.png"
+                    alt="Hombre buscando empezar en la plataforma"
+                    class="welcomeImage"
+                />
+            </div>
         </div>
-        <div>
-            <img
-                src="@/assets/images/inicio.png"
-                alt="Hombre buscando empezar en la plataforma"
-                class="welcomeImage"
-            />
-        </div>
-    </div>
+    </AdminPanel>
 </template>
 
 <script setup>
+import AdminPanel from '../components/AdminPanel.vue'
 import { storeToRefs } from 'pinia'
 import { userAuthStore } from '@/stores/auth'
 

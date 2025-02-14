@@ -222,7 +222,7 @@ const getTagState = (state) => {
         2: { text: 'Cancelado', color: 'red' },
         3: { text: 'Pendiente', color: 'orange' },
         4: { text: 'Pendiente', color: 'orange' },
-        5: { text: 'Activo', color: 'blue' }
+        5: { text: 'Pagado', color: 'green' }
     }
 
     return states[state] || { text: 'Pagado', color: 'green' }
