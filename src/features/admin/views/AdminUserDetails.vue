@@ -106,6 +106,17 @@
                                 color="blue"
                                 :text="`Comision ${Number(dataUser.comision)}%`"
                             />
+                            <v-chip
+                                v-if="dataUser.referredCodeHistory !== null"
+                                color="purple"
+                                size="x-large"
+                                :text="`${
+                                    dataUser.referredCodeHistory?.referredCode
+                                        .name
+                                } - ${formatDate2(
+                                    dataUser.referredCodeHistory?.date_use
+                                )}`"
+                            />
                         </div>
                         <div v-else>
                             <label class="color-green"
@@ -249,28 +260,6 @@
                         @click="cancelChanges()"
                     />
                 </div>
-            </div>
-        </AdminDetailsSection>
-
-        <AdminDetailsSection
-            title="Código referido"
-            v-if="dataUser.referredCodeHistory !== null"
-        >
-            <div class="d-flex w-full justify-center">
-                <v-chip
-                    variant="outlined"
-                    color="purple"
-                    size="large"
-                    class="px-14"
-                >
-                    {{
-                        `${
-                            dataUser.referredCodeHistory?.referredCode.name
-                        } - ${formatDate2(
-                            dataUser.referredCodeHistory?.date_use
-                        )}`
-                    }}
-                </v-chip>
             </div>
         </AdminDetailsSection>
 
