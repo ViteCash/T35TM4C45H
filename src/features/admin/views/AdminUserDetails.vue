@@ -256,26 +256,22 @@
             title="Código referido"
             v-if="dataUser.referredCodeHistory !== null"
         >
-            <v-row class="content-info-section">
-                <v-col cols="12">
-                    <div
-                        class="d-flex justify-center items-center flex-items-history"
-                    >
-                        <div class="item">
-                            <p>
-                                {{
-                                    `${
-                                        dataUser.referredCodeHistory
-                                            ?.referredCode.name
-                                    } - ${formatDate2(
-                                        dataUser.referredCodeHistory?.date_use
-                                    )}`
-                                }}
-                            </p>
-                        </div>
-                    </div>
-                </v-col>
-            </v-row>
+            <div class="d-flex w-full justify-center">
+                <v-chip
+                    variant="outlined"
+                    color="purple"
+                    size="large"
+                    class="px-14"
+                >
+                    {{
+                        `${
+                            dataUser.referredCodeHistory?.referredCode.name
+                        } - ${formatDate2(
+                            dataUser.referredCodeHistory?.date_use
+                        )}`
+                    }}
+                </v-chip>
+            </div>
         </AdminDetailsSection>
 
         <AdminDetailsSection title="Documentos">
@@ -542,48 +538,48 @@
             v-if="dataUser?.historyUsers?.length > 0"
             title="Historial de Actualizaciones"
         >
-            <v-row class="mt-5">
+            <v-row
+                v-for="(item, index) in dataUser?.historyUsers"
+                :key="index"
+                class="d-flex align-center"
+            >
                 <v-col
-                    cols="12"
-                    v-for="(item, index) in dataUser?.historyUsers"
-                    :key="index"
+                    cols="4"
+                    class="text-center text-body-1 font-weight-medium"
+                    >{{
+                        `${item.user.nombres} ${item.user.apellido_paterno} ${
+                            item.user.apellido_materno ?? ''
+                        }`
+                    }}</v-col
                 >
-                    <v-row class="history-updates">
-                        <v-col>
-                            <p>
-                                <b
-                                    >{{
-                                        `${item.user.nombres} ${
-                                            item.user.apellido_paterno
-                                        } ${item.user.apellido_materno ?? ''}`
-                                    }}
-                                </b>
-                            </p>
-                        </v-col>
-                        <v-col class="state-order info-user-user">
-                            {{
-                                item.state_user === 0
-                                    ? 'Creación de Cuenta'
-                                    : item.state_user === 10
-                                    ? 'Editado'
-                                    : item.state_user === 11
-                                    ? 'Creacion de Codigo de Referido'
-                                    : item.state_user === 12
-                                    ? 'Actualización de Codigo de Referido'
-                                    : item.state_user === 2
-                                    ? 'Activación de cuenta'
-                                    : item.state_user === 4
-                                    ? 'Error en Aprovación de Cuenta'
-                                    : 'Nada'
-                            }}
-                        </v-col>
-                        <v-col class="text-center">
-                            <p>
-                                <b>Fecha:</b>
-                                {{ formatDate2(item.create_date) }}
-                            </p>
-                        </v-col>
-                    </v-row>
+                <v-col cols="4" class="text-center"
+                    ><v-chip
+                        variant="outlined"
+                        color="info"
+                        size="large"
+                        class="px-12"
+                        >{{
+                            item.state_user === 0
+                                ? 'Creación de Cuenta'
+                                : item.state_user === 10
+                                ? 'Editado'
+                                : item.state_user === 11
+                                ? 'Creacion de Codigo de Referido'
+                                : item.state_user === 12
+                                ? 'Actualización de Codigo de Referido'
+                                : item.state_user === 2
+                                ? 'Activación de cuenta'
+                                : item.state_user === 4
+                                ? 'Error en Aprovación de Cuenta'
+                                : 'Nada'
+                        }}</v-chip
+                    ></v-col
+                >
+                <v-col
+                    cols="4"
+                    class="text-center text-body-1 font-weight-medium"
+                >
+                    {{ formatDate2(item.create_date) }}
                 </v-col>
             </v-row>
         </AdminDetailsSection>
