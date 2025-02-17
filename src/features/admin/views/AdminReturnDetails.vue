@@ -229,15 +229,20 @@
 
 <script setup>
 import AdminPanel from '../components/AdminPanel.vue'
+import AdminDetailsSection from '../components/AdminDetailsSection.vue'
 
 import { computed, onMounted, ref } from 'vue'
-import { validateRoutes } from '@/shared/scripts/validatePermissRoutes.js'
+import { useRoute } from 'vue-router'
+
 import { adminAdminStore } from '@/stores/admin'
 import { userUserStore } from '@/stores/user'
 import { userAuthStore } from '@/stores/auth'
-import { useRoute } from 'vue-router'
+
+import { validateRoutes } from '@/shared/scripts/validatePermissRoutes.js'
 import { formatComas, formatDate2 } from '@/shared/scripts/helpers/formats.js'
-import AdminDetailsSection from '../components/AdminDetailsSection.vue'
+
+import { getKeyFacilToken } from '../composables/getKeyFacilToken.js'
+import axios from 'axios'
 import { color } from 'chart.js/helpers'
 
 const adminStore = adminAdminStore()
@@ -296,20 +301,102 @@ const getTagState = (state) => {
     return states[state] || { text: 'Desconocido', color: 'grey' }
 }
 
+const fullName = computed(() => {
+    return `${dataOrden.value.user.nombres} ${dataOrden.value.user.apellido_paterno} ${dataOrden.value.user.apellido_materno}`
+        .trim()
+        .replace(/\s+/g, ' ')
+})
+const dni = computed(() => {
+    return dataOrden.value.user.dni
+})
+
+const email = computed(() => {
+    return dataOrden.value.user.email
+})
+
+const serie = computed(() => {
+    if (dataOrden.value.bankUser.id === 2) {
+        return 'BB02'
+    } else return 'BB01'
+})
+
+const fee = computed(() => {
+    return dataOrden.value.monto_comision
+})
+
+const bankName = computed(() => {
+    return dataOrden.value.bankUser.name_bank
+})
+
+const amount = computed(() => {
+    return dataOrden.value.monto_send
+})
+
+const token = computed(() => {
+    return getKeyFacilToken(dataOrden.value.bankUser.id)
+})
+// VALIDAR DNI/CE PARA FACTURACION
+
+const jsonObject = computed(() => ({
+    tipo: '03', // BOLETA
+    serie: serie.value,
+    fecha_emision: new Date().toISOString(), // FECHA ACTUAL
+    tipo_operacion: '0101', // VENTA
+    cliente_tipo: '1', // DNI O CE
+    cliente_documento: dni.value,
+    cliente_nombre: fullName.value,
+    cliente_email: email.value,
+    observaciones:
+        'REGISTRADO EN SBS PARA REALIZAR OPERACIONES FINANCIERAS SEGUN RESOLUCION: 03260-2022',
+    descuento_global_porcentaje: 0,
+    moneda: 'PEN',
+    items: [
+        {
+            codigo: 'ABCD000001',
+            descripcion: `POR LA COMISION DEL CAMBIO DE SALDO; POR USO DE LAS CUENTAS RECAUDO, DE LA TARJETA ${bankName.value}; IMPORTE OPERADO: ${amount.value}`,
+            unidad_medida: 'ZZ', // SERVICIOS
+            cantidad: 1,
+            precio_unitario: fee.value, // COMISION SOLES
+            tipo_igv: '30' // OPERACION ONEROSA
+        }
+    ]
+}))
+
 const updateOrder = async (state) => {
-    userStore.stateLoadingGeneral(true)
-    let dt = {
-        body: {
-            state,
-            obs: obs.value
-        },
-        orderId: route.params.idOrden
-    }
-    const result = await adminStore.updateStateOrder(dt)
-    if (result.success) {
-        getOrden(route.params.idOrden)
-        textInfo.value = false
-        userStore.stateLoadingGeneral(false)
+    // userStore.stateLoadingGeneral(true)
+    // let dt = {
+    //     body: {
+    //         state,
+    //         obs: obs.value
+    //     },
+    //     orderId: route.params.idOrden
+    // }
+    // const result = await adminStore.updateStateOrder(dt)
+    // if (result.success) {
+    //     getOrden(route.params.idOrden)
+    //     textInfo.value = false
+    //     userStore.stateLoadingGeneral(false)
+    // }
+
+    if (state === 5) {
+        try {
+            const response = await axios.post(
+                'https://api.vitekey.com/keyfact/integra/v1/invoices',
+                JSON.stringify(jsonObject.value),
+                {
+                    headers: {
+                        Authorization: `Bearer ${token.value}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            )
+            console.log('Factura enviada correctamente:', response.data)
+        } catch (error) {
+            console.error(
+                'Error al enviar la factura:',
+                error.response ? error.response.data : error.message
+            )
+        }
     }
 }
 
